@@ -1,8 +1,10 @@
 {-# LANGUAGE
     TemplateHaskell
   , CPP #-}
+-- | Declare safe top-level mutable variables which scope like ordinary values.
 module Data.Global
-    ( -- $doc
+    ( -- * Using this module
+      -- $doc
 
       -- * IORef
       declareIORef

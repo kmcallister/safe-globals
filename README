@@ -1,0 +1,10 @@
+safe-globals provides safe top-level mutable variables for Haskell,
+which scope like ordinary values.
+
+Documentation is hosted at http://hackage.haskell.org/package/safe-globals
+
+To build the documentation yourself, run
+
+  $ cabal configure && cabal haddock --hyperlink-source
+
+This will produce HTML documentation under dist/doc/html/safe-globals

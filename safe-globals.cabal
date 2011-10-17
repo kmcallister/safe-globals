@@ -36,6 +36,10 @@ description:
 
 extra-source-files:
     README
+  , examples/all.hs
+  , examples/isolation/A.hs
+  , examples/isolation/B.hs
+  , examples/isolation/main.hs
 
 library
   exposed-modules:

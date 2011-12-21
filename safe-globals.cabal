@@ -33,6 +33,8 @@ description:
     usual @unsafePerformIO@ trick, so it is subject to the same caveats.  In
     particular, linking a module and then loading the same module dynamically
     through the GHC API may produce two copies of the same top-level variable.
+    See the documentation of @unsafePerformIO@ for additional compiler-specific
+    requirements.
     .
     This library may not work properly on GHC before 7.4, due to a GHC bug:
     <http://hackage.haskell.org/trac/ghc/ticket/5558>

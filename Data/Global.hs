@@ -117,7 +117,7 @@ declare mty newRef nameStr = do
     return [
         SigD name ty
       , ValD (VarP name) (NormalB body) []
-      , PragmaD (InlineP name (InlineSpec False False Nothing)) ]
+      , PragmaD (InlineP name Inline FunLike AllPhases) ]
 
 declareRef :: Name -> Q Exp -> String -> Q Type -> Q [Dec]
 declareRef refTy newRef nameStr mty

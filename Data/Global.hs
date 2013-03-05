@@ -104,6 +104,13 @@ polymorphic ListT           = False
 polymorphic (AppT s t) = polymorphic s || polymorphic t
 polymorphic (SigT t _) = polymorphic t
 
+noinlinePragma :: Name -> Pragma
+#if MIN_VERSION_template_haskell(2,8,0)
+noinlinePragma name = InlineP name NoInline FunLike AllPhases
+#else
+noinlinePragma name = InlineP name (InlineSpec False False Nothing)
+#endif
+
 declare :: Q Type -> Q Exp -> String -> Q [Dec]
 declare mty newRef nameStr = do
     let name = mkName nameStr
@@ -117,7 +124,7 @@ declare mty newRef nameStr = do
     return [
         SigD name ty
       , ValD (VarP name) (NormalB body) []
-      , PragmaD (InlineP name (InlineSpec False False Nothing)) ]
+      , PragmaD (noinlinePragma name) ]
 
 declareRef :: Name -> Q Exp -> String -> Q Type -> Q [Dec]
 declareRef refTy newRef nameStr mty

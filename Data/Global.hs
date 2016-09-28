@@ -11,7 +11,6 @@ module Data.Global
 
       -- * Control.Concurrent
     , declareMVar, declareEmptyMVar
-    , declareSampleVar
     , declareChan
     , declareQSem, declareQSemN
 
@@ -35,7 +34,6 @@ import Language.Haskell.TH
 
 import Data.IORef
 import Control.Concurrent
-import Control.Concurrent.SampleVar
 import Control.Concurrent.STM
 
 import System.IO.Unsafe ( unsafePerformIO )
@@ -146,12 +144,6 @@ declareIORef     name ty ex = declareRef ''IORef     [| newIORef     $ex |] name
 -- >declareMVar "foo" [t| Char |] [e| 'x' |]
 declareMVar      :: DeclareInit
 declareMVar      name ty ex = declareRef ''MVar      [| newMVar      $ex |] name ty
-
--- | Declare a @'SampleVar'@ with an initial value.
---
--- >declareSampleVar "foo" [t| Char |] [e| 'x' |]
-declareSampleVar :: DeclareInit
-declareSampleVar name ty ex = declareRef ''SampleVar [| newSampleVar $ex |] name ty
 
 -- | Declare a @'TVar'@ with an initial value.
 --

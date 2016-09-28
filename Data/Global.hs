@@ -35,6 +35,7 @@ import Language.Haskell.TH
 
 import Data.IORef
 import Control.Concurrent
+import Control.Concurrent.SampleVar
 import Control.Concurrent.STM
 
 import System.IO.Unsafe ( unsafePerformIO )

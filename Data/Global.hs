@@ -11,7 +11,6 @@ module Data.Global
 
       -- * Control.Concurrent
     , declareMVar, declareEmptyMVar
-    , declareSampleVar
     , declareChan
     , declareQSem, declareQSemN
 
@@ -104,6 +103,13 @@ polymorphic ListT           = False
 polymorphic (AppT s t) = polymorphic s || polymorphic t
 polymorphic (SigT t _) = polymorphic t
 
+noinlinePragma :: Name -> Pragma
+#if MIN_VERSION_template_haskell(2,8,0)
+noinlinePragma name = InlineP name NoInline FunLike AllPhases
+#else
+noinlinePragma name = InlineP name (InlineSpec False False Nothing)
+#endif
+
 declare :: Q Type -> Q Exp -> String -> Q [Dec]
 declare mty newRef nameStr = do
     let name = mkName nameStr
@@ -117,7 +123,7 @@ declare mty newRef nameStr = do
     return [
         SigD name ty
       , ValD (VarP name) (NormalB body) []
-      , PragmaD (InlineP name (InlineSpec False False Nothing)) ]
+      , PragmaD (noinlinePragma name) ]
 
 declareRef :: Name -> Q Exp -> String -> Q Type -> Q [Dec]
 declareRef refTy newRef nameStr mty
@@ -138,12 +144,6 @@ declareIORef     name ty ex = declareRef ''IORef     [| newIORef     $ex |] name
 -- >declareMVar "foo" [t| Char |] [e| 'x' |]
 declareMVar      :: DeclareInit
 declareMVar      name ty ex = declareRef ''MVar      [| newMVar      $ex |] name ty
-
--- | Declare a @'SampleVar'@ with an initial value.
---
--- >declareSampleVar "foo" [t| Char |] [e| 'x' |]
-declareSampleVar :: DeclareInit
-declareSampleVar name ty ex = declareRef ''SampleVar [| newSampleVar $ex |] name ty
 
 -- | Declare a @'TVar'@ with an initial value.
 --
